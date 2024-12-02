@@ -3,7 +3,7 @@
 from typing import Union, Optional, Tuple
 
 
-def to_kv(k: str, v: (int, float)) -> Tuple[str, float, int]:
+def to_kv(k: str, v: (int, float)) -> Tuple[str, float]:
     """Retunrs a tuple"""
     square = float(v ** 2)
     return (k, square)
