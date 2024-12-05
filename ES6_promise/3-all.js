@@ -7,15 +7,15 @@ export default function handleProfileSignup() {
   let output = '';
 
   return photo
-  .then((photoData) => {
-    output += photoData.body;
-    return user;
-  })
-  .then((user) => {
-    output += `${user.firstName} ${user.lastName}`;
-    console.log(output);
-  })
-  .catch(() => {
-  console.log('Signup system offline');
-  });
+    .then((photoData) => {
+      output += photoData.body;
+      return user;
+    })
+    .then((user) => {
+      output += ` ${user.firstName} ${user.lastName}`;
+      console.log(output);
+    })
+    .catch(() => {
+      console.log('Signup system offline');
+    });
 }
