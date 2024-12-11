@@ -3,12 +3,11 @@
 Async Comprehension."""
 import random
 import asyncio
+from typing import AsyncGenerator
 
-
-async def async_generator():
+async def async_generator() -> AsyncGenerator[float, None]:
     """Defines a coroutine that loops 10 times"""
-    i = random.randint(0, 10)
     for i in range(10):
         await asyncio.sleep(1)
 
-        yield i
+        yield (random.uniform(0, 10))
