@@ -1,28 +1,32 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 
 async function countStudents(path) {
   try {
-    const data = await fs.readFileSync(path, { encoding: 'utf-8' });
-    const lines = data.split('\n'); // Split into lines
-    const nonEmptyLines = lines.filter((line) => line.trim() !== '');
-    const rows = nonEmptyLines.slice(1); // remove the header
+    const data = await fs.readFile(path, { encoding: 'utf-8' });
+    const lines = data.split('\n').filter((line) => line.trim() !== '');
+    const rows = lines.slice(1); // Exclude the header
 
-    console.log(`Number of students: ${rows.length}`);
-
-    const studentCS = [];
-    const studentSWE = [];
+    const totalStudents = rows.length;
+    const studentsCS = [];
+    const studentsSWE = [];
 
     for (const row of rows) {
-      const studentData = row.split(','); // Split each row by commas
-      if (studentData[3] === 'CS') {
-        studentCS.push(studentData[0]);
-      }
-      if (studentData[3] === 'SWE') {
-        studentSWE.push(studentData[0]);
-      }
+      const columns = row.split(',');
+      const studentName = columns[0];
+      const field = columns[3];
+
+      if (field === 'CS') studentsCS.push(studentName);
+      if (field === 'SWE') studentsSWE.push(studentName);
     }
-    console.log(`Number of students in CS: ${studentCS.length}. List: ${studentCS.join(', ')}`);
-    console.log(`Number of students in SWE: ${studentSWE.length}. List: ${studentSWE.join(', ')}`);
+
+    // Construct array with formatted lines
+    const output = [
+      `Number of students: ${totalStudents}`,
+      `Number of students in CS: ${studentsCS.length}. List: ${studentsCS.join(', ')}`,
+      `Number of students in SWE: ${studentsSWE.length}. List: ${studentsSWE.join(', ')}`,
+    ];
+
+    return output;
   } catch (error) {
     throw new Error('Cannot load the database');
   }
