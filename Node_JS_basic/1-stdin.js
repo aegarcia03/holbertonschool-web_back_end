@@ -1,8 +1,11 @@
 // Program to be executed through command line
-const process = require('node:process');
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-const args = process.argv.slice(2);
+process.stdin.on('data', () => {
+  const name = process.stdin.read();
+  if (name) process.stdout.write(`Your name is: ${name}`);
+});
 
-console.log('Welcome to Holberton School, what is your name?');
-console.log(`Your name is: ${args[0]}`);
-console.log('This important software is now closing');
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
+});
