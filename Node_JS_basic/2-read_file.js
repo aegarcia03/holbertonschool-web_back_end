@@ -7,7 +7,8 @@ function countStudents(path) {
       throw new Error('Cannot load the database');
     }
     const lines = data.split('\n'); // Split into lines
-    const rows = lines.slice(1); // remove the header
+    const nonEmptyLines = lines.filter((line) => line.trim() !== '');
+    const rows = nonEmptyLines.slice(1); // remove the header
 
     console.log(`Number of students: ${rows.length}`);
 
