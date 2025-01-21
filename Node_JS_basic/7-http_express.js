@@ -12,9 +12,9 @@ app.get('/students', async (req, res) => {
   let responseMessage = 'This is the list of our students\n';
   try {
     const output = await countStudents(process.argv[2]);
-    responseMessage += output.join('\n');
+    res.send(`${responseMessage}${output.join('\n')}`);
   } catch (error) {
-    responseMessage = 'Cannot load the database';
+    res.send(responseMessage += 'Cannot load the database');
   }
   res.send(responseMessage); // Send a single response
 });
