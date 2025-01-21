@@ -16,7 +16,6 @@ app.get('/students', async (req, res) => {
   } catch (error) {
     res.send(responseMessage += 'Cannot load the database');
   }
-  res.send(responseMessage); // Send a single response
 });
 
 app.listen(PORT);
