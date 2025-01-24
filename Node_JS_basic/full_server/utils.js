@@ -1,7 +1,8 @@
 const fs = require('fs');
 
 async function readDatabase(path) {
-  try {
+  return new Promise ((resolve, reject) {
+    try {
     const data = fs.readFile(path, { encoding: 'utf-8' });
     const lines = data.split('\n').filter((line) => line.trim() !== '');
     const rows = lines.slice(1); // Exclude the header
@@ -21,6 +22,7 @@ async function readDatabase(path) {
   } catch (error) {
     throw new Error('Cannot load the database');
   }
+}
 }
 
 module.exports = readDatabase;
