@@ -3,7 +3,7 @@ import readDatabase  from "../utils";
 export default class StudentsController {
   static getAllStudents(reques, response) {
     const filename = process.argv[process.argv.length -1];
-    let firstText = 'This is the list of our students';
+    let firstText = 'This is the list of our students\n';
 
     readDatabase(filename)
     .then((data) => {
