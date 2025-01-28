@@ -1,35 +1,40 @@
-import readDatabase  from "../utils";
+const readDatabase = require('../utils');
 
-export default class StudentsController {
-  static getAllStudents(reques, response) {
-    const filename = process.argv[process.argv.length -1];
-    let firstText = 'This is the list of our students\n';
+class StudentsController {
+  static getAllStudents(request, response) {
+    readDatabase(process.argv[2])
+      .then((fields) => {
+        const output = ['This is the list of our students'];
 
-    readDatabase(filename)
-    .then((data) => {
-      let studentCS = data.CS;
-      firstText += `Number of students in CS: ${studentCS.length}. `;
-      firstText += `List: ${studentCS.join(', ')}\n`;
+        const sortedFields = Object.keys(fields).sort((a, b) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
 
-      let studentSWE = data.SWE;
-      firstText += `Number of students in SWE: ${studentSWE.length}. `;
-      firstText += `List: ${studentSWE.join(', ')}\n`;
+        sortedFields.forEach((field) => {
+          output.push(`Number of students in ${field}: ${fields[field].length}. List: ${fields[field].join(', ')}`);
+        });
 
-      response.status(200).end(firstText);
-    })
-    .catch((error) => {
-      response.status(500).end(error.message);
-    });
+        response.status(200).send(output.join('\n'));
+      })
+      .catch(() => {
+        response.status(500).send('Cannot load the database');
+      });
   }
 
   static getAllStudentsByMajor(request, response) {
-    const filename = process.argv[process.argv.length -1];
-    readDatabase(filename)
-    .then((data) => {
-    })
-    .catch((error) => {
-      response.status(500).end(error.message);
-    });
+    const { major } = request.params;
+
+    if (major !== 'CS' && major !== 'SWE') {
+      response.status(500).send('Major parameter must be CS or SWE');
+      return;
+    }
+
+    readDatabase(process.argv[2])
+      .then((fields) => {
+        const students = fields[major] || [];
+        response.status(200).send(`List: ${students.join(', ')}`);
+      })
+      .catch(() => {
+        response.status(500).send('Cannot load the database');
+      });
   }
 }
 
